@@ -54,7 +54,7 @@ def create_card_chinese(chinese, english, pinyin, deck):
                 'id': mochi_field_eng_py,
                 'value': pinyin
             }
-            
+            #populate airtable ID fields
         } 
     }
     response = requests.post(url, json=payload, headers=headers, auth=HTTPBasicAuth(mochi_api_key, ''))
@@ -82,7 +82,7 @@ def create_card_english(chinese, english, pinyin, deck):
                 'id': mochi_field_ch_py,
                 'value': pinyin
             }
-            
+            #populate airtable ID fields
         } 
     }
     response = requests.post(url, json=payload, headers=headers, auth=HTTPBasicAuth(mochi_api_key, ''))
@@ -95,3 +95,47 @@ def get_cards(deck_id=None):
     }
     response = requests.get(url, headers=headers, auth=HTTPBasicAuth(mochi_api_key, ''))
     return response.json()
+
+#get deck ID from name
+def get_all_decks():
+    url = 'https://app.mochi.cards/api/decks/'
+    headers = {
+        "Content-Type": "application/json"
+    }
+    response_json_full = []
+    bookmark = None
+    while True:
+        if bookmark is not None:
+            url = f'https://app.mochi.cards/api/decks?bookmark={bookmark}'
+        response = requests.get(url, headers=headers, auth=HTTPBasicAuth(mochi_api_key, ''))
+        response_json = response.json()
+        if bookmark is not None:
+            break
+        else:
+            bookmark = response_json['bookmark']
+            response_json_full.append(response_json)
+    output = []
+    for page in response_json_full:
+        for item in page['docs']:
+            item_dict = {}
+            item_dict['mochi_id'] = item['id']
+            item_dict['name'] = item['name']
+            output.append(item_dict)
+    return output
+
+
+
+def get_deck_id(deck_name):
+    all_decks = get_all_decks()
+    lookup_deck_id = ''
+    for deck in all_decks:
+        if deck_name == deck['name']:
+            lookup_deck_id = deck['mochi_id']
+            break
+        else:
+            continue
+    if lookup_deck_id != '':
+        return lookup_deck_id
+    else:
+        print(f'no id found for {deck_name}')
+        return None

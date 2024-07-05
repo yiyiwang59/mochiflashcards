@@ -1,3 +1,5 @@
 requests
 pyairtable
 pycccedict
+pypinyin
+python-dotenv
