@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./mochi_chinese_flashcards/lib/python3.12/site-packages"
+    ]
+}
