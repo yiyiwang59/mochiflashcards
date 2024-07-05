@@ -6,7 +6,7 @@ def get_pinyin_translation(word):
     result = cccedict.get_entry(word)
     pinyin_word = format_pinyin_from_char(word)
     if result is not None:
-        translation = ", ".join(result['definitions'])
+        translation = "; ".join(result['definitions'])
         return pinyin_word, translation
     else: 
         return pinyin_word, None

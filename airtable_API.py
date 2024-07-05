@@ -2,6 +2,7 @@ from pyairtable import Api, formulas
 from dotenv import load_dotenv
 import os
 import chinese_dict_lookup as ch
+import requests
 
 # Load environment variables from .env file
 load_dotenv()
@@ -19,8 +20,9 @@ lesson_name_id = os.getenv('AIRTABLE_LESSON_NAME_ID')
 lesson_type_id = os.getenv('AIRTABLE_LESSON_TYPE_ID')
 mochi_deck_id = os.getenv('AIRTABLE_MOCHI_DECK_ID')
 mochi_deck_ref = formulas.FIELD(f'{mochi_deck_id}')
-mochi_card_id = os.getenv('AIRTABLE_MOCHI_CARD_ID')
-mochi_card_ref = formulas.FIELD(f'{mochi_card_id}')
+mochi_card_id_ch = os.getenv('AIRTABLE_MOCHI_CARD_CH_ID')
+mochi_card_ref = formulas.FIELD(f'{mochi_card_id_ch}')
+mochi_card_id_eng = os.getenv('AIRTABLE_MOCHI_CARD_ENG_ID')
 
 
 api = Api(airtable_api_key)
@@ -75,7 +77,7 @@ def get_cards_to_create():
         record_dict['vocab'] = record['fields']['Name'].strip()
         record_dict['pinyin'] = record['fields']['Pinyin']
         record_dict['english'] = record['fields']['English Translation']
-        record_dict['deck'] = record['fields']['Chinese Lesson'][0]
+        record_dict['deck'] = get_lesson_name(record['fields']['Chinese Lesson'][0])
         output.append(record_dict)
     return output
 
@@ -86,4 +88,10 @@ def populate_mochi_id_lesson(lesson_id, mochi_id):
 
 
 #populate mochi ID for chinese vocab
+def populate_mochi_id_vocab(vocab_id, mochi_id_ch, mochi_id_eng):
+    vocab_table.update(vocab_id, {f"{mochi_card_id_ch}": mochi_id_ch, f"{mochi_card_id_eng}": mochi_id_eng})
     
+#lookup chinese lesson name from ID
+def get_lesson_name(lesson_id):
+    output = lesson_table.get(lesson_id)
+    return output['fields']['Name']
