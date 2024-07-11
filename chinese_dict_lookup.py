@@ -9,7 +9,7 @@ def get_pinyin_translation(word):
         translation = "; ".join(result['definitions'])
         return pinyin_word, translation
     else: 
-        return pinyin_word, None
+        return pinyin_word, "No translation found"
 
 def format_pinyin_from_char(char_input):
     converted = [x[0] for x in pinyin(char_input)]
