@@ -29,6 +29,7 @@ api = Api(airtable_api_key)
 vocab_table = api.table(base_id, vocab_table_id)
 lesson_table = api.table(base_id, lesson_table_id)
 
+#Get any lines where english translation column is null
 def get_missing_translation_records():
     airtable_json = vocab_table.all(fields=[f'{ch_vocab_field}'],formula=f"NOT({english_translation_ref})")
     output = []
@@ -39,6 +40,7 @@ def get_missing_translation_records():
         output.append(record_dict)
     return output
 
+#Fill in pinyin and english translation for all lines with english translation = null
 def fill_in_missing_data():
     records = get_missing_translation_records()
     complete_output = []

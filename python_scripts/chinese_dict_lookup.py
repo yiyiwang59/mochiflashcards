@@ -1,6 +1,7 @@
 from pycccedict.cccedict import CcCedict
 from pypinyin import pinyin, Style
 
+#Lookup pinyin & english translation from one vocab word given
 def get_pinyin_translation(word):
     cccedict = CcCedict()
     result = cccedict.get_entry(word)
@@ -11,11 +12,13 @@ def get_pinyin_translation(word):
     else: 
         return pinyin_word, "No translation found"
 
+#Format pinyin format with tone numbers to tone symbols
 def format_pinyin_from_char(char_input):
     converted = [x[0] for x in pinyin(char_input)]
     converted_pinyin = ' '.join(converted)
     return converted_pinyin
 
+#Full pinyin, english translation for a list of vocab words
 def lookup_vocab_list(vocab_list):
     full_list = []
     for vocab in vocab_list:

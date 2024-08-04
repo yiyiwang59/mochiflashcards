@@ -28,3 +28,7 @@ def sync_cards():
         mochi_card_id_ch = m.create_card_chinese(chinese, english, pinyin, deck_id)
         mochi_card_id_eng = m.create_card_english(chinese, english, pinyin, deck_id)
         at.populate_mochi_id_vocab(at_vocab_id, mochi_card_id_ch, mochi_card_id_eng)
+
+#General AT to Mochi Sync (existing updates)
+
+#General Mochi to AT Sync (existing updates)

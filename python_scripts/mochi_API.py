@@ -20,7 +20,7 @@ mochi_field_eng_py = os.getenv('MOCHI_TEMPLATE_ENGLISH_FIELD_PY')
 
 
 
-
+#Create a new deck
 def create_deck(name, parent_deck_id=None):
     url = 'https://app.mochi.cards/api/decks'
     headers = {
@@ -34,6 +34,7 @@ def create_deck(name, parent_deck_id=None):
     response = requests.post(url, json=payload, headers=headers, auth=HTTPBasicAuth(mochi_api_key, ''))
     return response.json()['id']
 
+#Create a card with Chinese first template
 def create_card_chinese(chinese, english, pinyin, deck):
     url =  'https://app.mochi.cards/api/cards/'
     headers = {
@@ -61,6 +62,7 @@ def create_card_chinese(chinese, english, pinyin, deck):
     response = requests.post(url, json=payload, headers=headers, auth=HTTPBasicAuth(mochi_api_key, ''))
     return response.json()['id']
 
+#Create card with English first template
 def create_card_english(chinese, english, pinyin, deck):
     url =  'https://app.mochi.cards/api/cards/'
     headers = {
@@ -88,6 +90,10 @@ def create_card_english(chinese, english, pinyin, deck):
     response = requests.post(url, json=payload, headers=headers, auth=HTTPBasicAuth(mochi_api_key, ''))
     return response.json()['id']
 
+#Create card with Vocab Quiz Template
+
+
+#Get all cards
 def get_cards(deck_id=None):
     url = 'https://app.mochi.cards/api/cards/'
     headers = {
@@ -96,7 +102,7 @@ def get_cards(deck_id=None):
     response = requests.get(url, headers=headers, auth=HTTPBasicAuth(mochi_api_key, ''))
     return response.json()
 
-#get deck ID from name
+#get all decks
 def get_all_decks():
     url = 'https://app.mochi.cards/api/decks/'
     headers = {
@@ -124,7 +130,7 @@ def get_all_decks():
     return output
 
 
-
+#get deck id from name
 def get_deck_id(deck_name):
     all_decks = get_all_decks()
     lookup_deck_id = ''
