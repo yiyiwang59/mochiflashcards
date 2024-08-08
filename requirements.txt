@@ -3,3 +3,4 @@ pyairtable
 pycccedict
 pypinyin
 python-dotenv
+pytest pytest-mock
