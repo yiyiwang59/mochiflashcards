@@ -1,10 +1,9 @@
 from pyairtable import Api, formulas
 from dotenv import load_dotenv
 import os
-import chinese_dict_lookup as ch
-import requests
+from chinese_dict_lookup import ChineseVocabLookup
 
-class ConnectAirtableAPI:
+class ConnectAirtableAPI():
     def __init__(self):
         # Load environment variables from .env file
         load_dotenv()
@@ -32,8 +31,7 @@ class ConnectAirtableAPI:
         self.mochi_deck_ref = formulas.FIELD(f'{self.mochi_deck_id}')
         self.mochi_card_ref = formulas.FIELD(f'{self.mochi_card_id_ch}')
 
-
-
+        self.ch = ChineseVocabLookup()
 
     #Get any lines where english translation column is null
     def get_missing_translation_records(self):
@@ -53,7 +51,7 @@ class ConnectAirtableAPI:
         for line in records:
             record_dict = {}
             fields_dict = {}
-            pinyin_lookup, translation_lookup = ch.get_pinyin_translation(line['vocab_word'])
+            pinyin_lookup, translation_lookup = self.ch.get_pinyin_translation(line['vocab_word'])
             record_dict['id'] = line['id']
             fields_dict[f'{self.ch_vocab_field}'] = line['vocab_word']
             fields_dict[f'{self.pinyin_field}'] = pinyin_lookup
@@ -91,9 +89,7 @@ class ConnectAirtableAPI:
 
     #populate mochi ID for chinese lesson
     def populate_mochi_id_lesson(self, lesson_id, mochi_id):
-        lesson_table.update(lesson_id, {f"{self.mochi_deck_id}": mochi_id})
-
-
+        self.lesson_table.update(lesson_id, {f"{self.mochi_deck_id}": mochi_id})
 
     #populate mochi ID for chinese vocab
     def populate_mochi_id_vocab(self, vocab_id, mochi_id_ch, mochi_id_eng):
