@@ -26,7 +26,6 @@ class TestChineseVocabLookup(unittest.TestCase):
         self.assertEqual(pinyin, 'xī shī quǎn')
 
     def test_lookup_vocab_list(self):
-        self.mock_cccdict.get_entry.return_value = {'definitions': 'shih tzu (dog breed)'}
         vocab_list = ['西施犬', '勇敢', '虎斑', '']
         result = self.vocab_lookup.lookup_vocab_list(vocab_list)
         expected = [{'word': '西施犬', 'pinyin': 'xī shī quǎn', 'translation': 'shih tzu (dog breed)'}, {'word': '勇敢', 'pinyin': 'yǒng gǎn', 'translation': 'brave;  courageous'}, {'word': '虎斑', 'pinyin': 'hǔ bān', 'translation': 'No translation found'}]
