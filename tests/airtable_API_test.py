@@ -25,7 +25,7 @@ class TestConnectAirtableAPI(unittest.TestCase):
     })
 
     def setUp(self):
-            self.manager = ConnectAirtableAPI()
+        self.manager = ConnectAirtableAPI()
     
     def test_get_missing_translation_records(self):
         with patch.object(self.manager.vocab_table, 'all', return_value = [

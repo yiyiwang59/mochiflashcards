@@ -1,7 +1,7 @@
 from pyairtable import Api, formulas
 from dotenv import load_dotenv
 import os
-from chinese_dict_lookup import ChineseVocabLookup
+from python_scripts.chinese_dict_lookup import ChineseVocabLookup
 
 class ConnectAirtableAPI():
     def __init__(self):
