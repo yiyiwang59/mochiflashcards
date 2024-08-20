@@ -59,9 +59,9 @@ Airtable Mochi Sync is a Python-based tool designed to synchronize data between 
 	```
 
 4. Run the script:
-```bash
-python main.py
-```
+	```bash
+	python main.py
+	```
 
 ## Usage
 
