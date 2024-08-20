@@ -1,13 +1,12 @@
 
-# Airtable Mochi Sync
+# Mochiflashcards
 
-Airtable Mochi Sync is a Python-based tool designed to synchronize data between Airtable and Mochi Cards. This project allows you to automatically create decks and cards in Mochi based on data stored in Airtable, ensuring that your flashcard collection is always up-to-date with your learning material.
+Mochiflashcards is a Python-based tool designed to synchronize data between Airtable and Mochi Cards. This project allows you to automatically create decks and cards in Mochi based on data stored in Airtable, ensuring that your flashcard collection is always up-to-date with your learning material.
 
 ## Features
 
-- **Sync Airtable Lessons to Mochi:** The tool handles the creation of decks and cards in Mochi based on the information provided in Airtable.
 - **Populate Vocabulary:** Populate english translation and pronunciation (pinyin) from just Chinese characters directly in Airtable
-- **Mochi Deck and Card creation multiple templates:** The tool handles the creation of decks and cards in Mochi with both Chinese-first and English-first templates for a given vocab set
+- **Sync Airtable Lessons to Mochi:** The tool handles the creation of decks and cards in Mochi with both Chinese-first and English-first templates for a given vocab set, based on the information provided in Airtable.
 
 ## Installation
 
@@ -82,7 +81,7 @@ python -m unittest discover -s tests -p '*_test.py'
 
 ## Contributing
 
-Contributions are welcome! Please fork the repository and submit a pull request with your changes. Make sure to follow the code style guidelines and add appropriate tests for any new features.
+(Future State)
 
 ## License
 

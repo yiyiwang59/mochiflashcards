@@ -1,5 +1,5 @@
 
-# Setup Guide for Airtable-Mochi Sync
+# Setup Guide for Mochiflashcards
 
 ## Prerequisites
 
