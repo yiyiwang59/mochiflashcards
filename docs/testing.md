@@ -20,134 +20,171 @@ The tests are organized using the `unittest` framework, with dependencies mocked
 
 ---
 
-## Unit Tests
-
-### Test: `test_sync_decks`
-
-**Tested Method:**
-- `AirtableMochiSync.sync_decks()`
-
-**Mocks:**
-- `ConnectAirtableAPI.get_decks_to_create()`
-- `MochiAPI.get_deck_id()`
-- `MochiAPI.create_deck()`
-- `ConnectAirtableAPI.populate_mochi_id_lesson()`
+## Testing Documentation
+  
+#### `airtable_API_test.py`
 
 **Purpose:**
-This test checks that the `sync_decks` method correctly handles the synchronization of decks between Airtable and Mochi. Specifically, it verifies:
-- The correct decks are retrieved from Airtable.
-- Deck IDs are fetched or created in Mochi based on the deck name.
-- The correct mappings are populated in Airtable.
+This test file is responsible for testing the `ConnectAirtableAPI` class methods. The tests focus on ensuring that the methods behave as expected when interacting with the Airtable API.
 
-**Expected Behavior:**
-- The method should create new decks in Mochi if they do not exist.
-- The `populate_mochi_id_lesson` method should be called the correct number of times with the appropriate arguments.
+**Unit Tests:**
+1. **`test_fill_in_missing_data`**
+- **Description:** Tests the `fill_in_missing_data` method to ensure it correctly identifies and fills in any missing data from the Airtable records.
+- **Mocked Dependencies:**
+	- Airtable API's `get_pinyin_translation` function.
+	- Airtable API's `vocab_table` property.
+- **Assertions:**
+	- Verify that the `get_pinyin_translation` function is called with the expected arguments.
+	- Ensure that the Airtable record is updated with the correct translations.
 
-**Assertions:**
-- The test checks that the returned result matches the expected decks from Airtable.
-- It verifies that the `populate_mochi_id_lesson` method was called with the correct arguments.
+2. **`test_get_cards_to_create`**
+- **Description:** Tests the `get_cards_to_create` method to ensure it retrieves the correct set of cards that need to be created in Mochi.
+- **Mocked Dependencies:**
+	- Airtable API's `vocab_table` property.
+- **Assertions:**
+	- Ensure the method filters and returns the correct list of cards needing creation.
+  
+3. **`test_populate_mochi_id_vocab`**
+- **Description:** Tests the `populate_mochi_id_vocab` method to ensure it properly updates the Airtable records with the generated Mochi card IDs.
+- **Mocked Dependencies:**
+	- Airtable API's `vocab_table` property.
+- **Assertions:**
+	- Verify that the Airtable record is updated with the correct Mochi card IDs.
 
-### Test: `test_sync_cards`
+4. `test_get_decks_to_create`
+- **Description:** Tests the `get_decks_to_create` method to ensure it correctly retrieves and processes decks to create from Airtable.
+- **Mocked Dependencies:**
+	- Airtable API's `lesson_table` property
+- **Assertions:**
+	- Ensure the method filters and returns the correct list of decks to create
 
-**Tested Method:**
-- `AirtableMochiSync.sync_cards()`
+5. `test_get_missing_translation_records`
+- **Description:** Tests the `get_missing_translation_records` method to ensure it correctly retrieves the correct rows from the `Chinese Vocab` table.
+- **Mocked Dependencies:**
+	- Airtable API's `vocab_table` property
+- **Assertions:**
+	- Ensure the method retrieves the correct filtered list of vocab words to lookup translations for
+6. `test_populate_mochi_id_lesson`
+- **Description:** Tests the `populate_mochi_id_lesson` method to ensure it properly updates the Airtable records with the generated Mochi Deck IDs.
+- **Mocked Dependencies:**
+	- Airtable API's `lesson_table` property
+- **Assertions:**
+	- Verify that the Airtable record is updated with the correct Mochi deck IDs.
 
-**Mocks:**
-- `ConnectAirtableAPI.get_cards_to_create()`
-- `MochiAPI.get_deck_id()`
-- `MochiAPI.create_card_chinese()`
-- `MochiAPI.create_card_english()`
-- `ConnectAirtableAPI.populate_mochi_id_vocab()`
+7. `test_get_lesson_name`
+- **Description:** Tests the `get_lesson_name` method to ensure it retrieves the correct lesson name from the id given
+- **Mocked Dependencies:**
+	- Airtable API's `lesson_table` property
+- **Assertions:**
+	- Verify that the lesson name returned is the correct for the id submitted
+
+---
+### `airtable_mochi_sync_test.py`
+**Purpose:**
+This test file is responsible for testing the `AirtableMochiSync` class methods. The tests focus on ensuring that the synchronization logic between Airtable and Mochi works correctly.
+
+**Unit Tests:**
+1. **`test_sync_decks`**
+- **Description:** Tests the `sync_decks` method to ensure it correctly synchronizes the deck structure between Airtable and Mochi.
+- **Mocked Dependencies:**
+	- `ConnectAirtableAPI.get_decks_to_create`
+	- `MochiAPI.get_deck_id`
+	- `MochiAPI.create_deck`
+	- `ConnectAirtableAPI.populate_mochi_id_lesson`
+- **Assertions:**
+	- Ensure that the correct deck structure is created in Mochi.
+	- Verify that the Airtable records are updated with the correct Mochi deck IDs.
+
+2. **`test_sync_cards`**
+- **Description:** Tests the `sync_cards` method to ensure it correctly synchronizes the vocab cards between Airtable and Mochi.
+- **Mocked Dependencies:**
+	- `ConnectAirtableAPI.get_cards_to_create`
+	- `MochiAPI.create_card_chinese`
+	- `MochiAPI.create_card_english`
+	- `ConnectAirtableAPI.populate_mochi_id_vocab`
+- **Assertions:**
+	- Ensure that the correct cards are created in Mochi.
+	- Verify that the Airtable records are updated with the correct Mochi card IDs.
+
+---
+### `mochi_API_test.py`
 
 **Purpose:**
-This test checks that the `sync_cards` method correctly handles the synchronization of vocabulary cards between Airtable and Mochi. It verifies:
-- Cards are correctly retrieved from Airtable.
-- Corresponding cards are created in Mochi using both Chinese-first and English-first templates.
-- The correct card IDs are populated back into Airtable.
+This test file is responsible for testing the `MochiAPI` class methods. The tests ensure that the methods correctly interact with the Mochi API to perform operations like creating decks and cards.
 
-**Expected Behavior:**
-- The method should correctly create vocabulary cards in the specified deck.
-- The `populate_mochi_id_vocab` method should be called with the correct arguments to update Airtable with the newly created Mochi card IDs.
+**Unit Tests:**
+1. **`test_create_deck`**
+- **Description:** Tests the `create_deck` method to ensure it successfully creates a deck in Mochi and returns the deck ID.
+- **Mocked Dependencies:**
+	- Mochi API's `requests.post` method.
+- **Assertions:**
+	- Ensure the correct payload is sent to the Mochi API.
+	- Verify that the returned deck ID matches the expected value.
 
-**Assertions:**
-- The test checks that the `populate_mochi_id_vocab` method was called the correct number of times with the expected arguments.
+2. **`test_create_card_chinese`**
+- **Description:** Tests the `create_card_chinese` method to ensure it successfully creates a card with the Chinese-first template in Mochi.
+- **Mocked Dependencies:**
+	- Mochi API's `requests.post` method.
+- **Assertions:**
+	- Verify that the correct payload is sent to the Mochi API.
+	- Ensure the correct card ID is returned.
 
-### Test: `test_create_deck`
+3. **`test_create_card_english`**
+- **Description:** Tests the `create_card_english` method to ensure it successfully creates a card with the English-first template in Mochi.
+- **Mocked Dependencies:**
+	- Mochi API's `requests.post` method.
+- **Assertions:**
+	- Verify that the correct payload is sent to the Mochi API.
+	- Ensure the correct card ID is returned.
 
-**Tested Method:**
-- `MochiAPI.create_deck()`
+4. **`test_get_cards`**
+- **Description:** Tests the `get_cards` method to ensure it retrieves all cards from Mochi for a given deck.
+- **Mocked Dependencies:**
+	- Mochi API's `requests.get` method.
+- **Assertions:**
+	- Verify that the correct API endpoint is called.
+	- Ensure the correct list of cards is returned.
 
-**Mocks:**
-- `requests.post`
+5. **`test_get_all_decks`**
+- **Description:** Tests the `get_all_decks` method to ensure it retrieves all decks from Mochi.
+- **Mocked Dependencies:**
+	- Mochi API's `requests.get` method.
+- **Assertions:**
+	- Verify that the API call handles pagination correctly.
+	- Ensure the correct list of decks is returned.
 
-**Purpose:**
-This test verifies that the `create_deck` method in the `MochiAPI` class correctly sends a POST request to the Mochi API to create a new deck.
+6. **`test_get_deck_id`**
+- **Description:** Tests the `get_deck_id` method to ensure it correctly retrieves the deck ID for a given deck name.
+- **Mocked Dependencies:**
+	- `MochiAPI.get_all_decks` method.
+- **Assertions:**
+	- Ensure the correct deck ID is returned for a given name.
+	- Verify that `None` is returned if the deck name is not found.
 
-**Expected Behavior:**
-- The method should send a POST request to the correct URL with the correct payload and headers.
-- The deck ID returned by the API should be correctly parsed and returned by the method.
 
-**Assertions:**
-- The test verifies that `requests.post` was called with the expected parameters.
-- It checks that the returned deck ID matches the expected value from the mocked API response.
-
-### Test: `test_create_card_chinese`
-
-**Tested Method:**
-- `MochiAPI.create_card_chinese()`
-
-**Mocks:**
-- `requests.post`
-
-**Purpose:**
-This test ensures that the `create_card_chinese` method correctly sends a POST request to create a Chinese-first card in the specified Mochi deck.
-
-**Expected Behavior:**
-- The method should correctly construct the payload with the Chinese, English, and Pinyin fields.
-- The API call should return the correct card ID.
-
-**Assertions:**
-- The test checks that `requests.post` was called with the correct parameters and payload.
-- It verifies that the returned card ID matches the expected value.
-
-### Test: `test_create_card_english`
-
-**Tested Method:**
-- `MochiAPI.create_card_english()`
-
-**Mocks:**
-- `requests.post`
+### `chinese_dict_lookup_test.py`
 
 **Purpose:**
-This test ensures that the `create_card_english` method correctly sends a POST request to create an English-first card in the specified Mochi deck.
+This test file ensure that the methods return correct pinyin, translations, and handle lists of vocabulary items appropriately.
 
-**Expected Behavior:**
-- The method should correctly construct the payload with the English, Chinese, and Pinyin fields.
-- The API call should return the correct card ID.
+**Unit Tests:**
+1. **Test: `test_get_pinyin_translation`**
+    - **Description:** Tests the `get_pinyin_translation` method to ensure it correctly returns the pinyin and translation for a given Chinese word.
+    - **Mocked Dependencies:**
+        - `CcCedict.get_entry` is mocked to return a predefined dictionary with the expected translation.
+    - **Assertions:**
+        - Checks if the pinyin is `xī shī quǎn`.
+        - Checks if the translation is `shih tzu (dog breed)`.
 
-**Assertions:**
-- The test checks that `requests.post` was called with the correct parameters and payload.
-- It verifies that the returned card ID matches the expected value.
+1. **Test: `test_format_pinyin_from_char`**
+    - **Description:** Tests the `format_pinyin_from_char` method to ensure it correctly formats the pinyin for a given Chinese character string.
+    - **Assertions:**
+        - Checks if the formatted pinyin is `xī shī quǎn`.
 
-### Test: `test_get_all_decks`
-
-**Tested Method:**
-- `MochiAPI.get_all_decks()`
-
-**Mocks:**
-- `requests.get`
-
-**Purpose:**
-This test ensures that the `get_all_decks` method correctly handles the pagination of results when retrieving all decks from the Mochi API.
-
-**Expected Behavior:**
-- The method should correctly handle multiple pages of results, using the bookmark for pagination.
-- It should return a list of all decks with their corresponding IDs.
-
-**Assertions:**
-- The test checks that `requests.get` was called the expected number of times.
-- It verifies that the returned list of decks matches the expected value based on the mocked API responses.
-
+1. **Test: `test_lookup_vocab_list`**
+    - **Description:** Tests the `lookup_vocab_list` method to ensure it correctly processes a list of vocabulary words, providing pinyin and translations for each.
+    - **Assertions:**
+        - Checks if the result matches the expected list of dictionaries, each containing the word, its pinyin, and its translation.
 ---
 
 ## Running the Tests
@@ -155,7 +192,7 @@ This test ensures that the `get_all_decks` method correctly handles the paginati
 To run the tests, use the following command:
 
 ```bash
-python -m unittest discover
+python -m unittest discover -s tests -p '*_test.py'
 ```
 
 Or, if using `pytest`:
@@ -168,6 +205,6 @@ pytest
 
 ## Conclusion
 
-These unit tests cover the core functionalities of the `AirtableMochiSync` and `MochiAPI` classes. By mocking external dependencies, the tests ensure that the synchronization logic between Airtable and Mochi operates as expected without making actual API calls. 
+These unit tests cover the core functionalities of the `ChineseVocabLookup`,  `ConnectAirtableAPI` , `AirtableMochiSync`, and  `MochiAPI` classes. By mocking external dependencies, the tests ensure that the synchronization logic between Airtable and Mochi operates as expected without making actual API calls. 
 
 ---
